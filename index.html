@@ -1,65 +1,420 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-<title>颜的网站</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>卡密生成管理后台</title>
 <style>
-  * {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Microsoft YaHei", sans-serif;
-  }
-
-  body {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    font-family: "Segoe UI",Microsoft YaHei,sans-serif;
+}
+body {
+    background: linear-gradient(135deg,#1a1a2e,#16233e);
+    color: #fff;
+    padding: 30px 15px;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .card {
-    background: white;
-    width: 380px;
-    padding: 40px 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.container {
+    max-width: 520px;
+    margin: 0 auto;
+}
+h2 {
     text-align: center;
-  }
-
-  .avatar {
-    width: 100px;
-    height: 100px;
-    background-image: url("https://q1.qlogo.cn/qhis/jRoggJ2RF3BSYIxzuMs468LhIVwUVicmmO3U1lyag2t3tfYNhGFdDXGicicDWShGTnqhZS1U7RwvNgS0D4oY2eAmA/640");
-    background-size: cover;
-    background-position: center;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-  }
-
-  h1 {
-    font-size: 24px;
-    color: #333;
+    margin-bottom: 25px;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: #00d9ff;
+}
+.count-info {
+    text-align: center;
+    background: rgba(0,255,157,0.1);
+    color: #00ff9d;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.panel {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+.select-wrap {
+    margin-bottom: 15px;
+    text-align: center;
+}
+#daySel,#countSel,#customCount {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    background: #222;
+    color: #fff;
+    outline: none;
+    margin: 5px;
+}
+#customCount{
+    width: 120px;
+    text-align: center;
+    display: none;
+}
+.btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 5px;
+}
+.btn-gen {
+    background: linear-gradient(90deg,#007bff,#00c6ff);
+    color: #fff;
+}
+.btn-gen:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,123,255,0.4);
+}
+.now-kami {
+    font-size: 22px;
+    color: #00ff9d;
+    text-align: center;
+    letter-spacing: 2px;
+    margin: 20px 0;
+    padding: 12px;
+    background: rgba(0,255,157,0.1);
+    border-radius: 12px;
+}
+.list-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #eee;
+}
+.list-box {
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+.list-box::-webkit-scrollbar {
+    width: 6px;
+}
+.list-box::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+}
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 12px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
     margin-bottom: 10px;
-  }
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.item-info .code {
+    font-size: 16px;
+    font-weight: 600;
+}
+.item-info .time {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 4px;
+}
+.status-tag {
+    font-size: 13px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-left: 8px;
+}
+.btn-del {
+    background: #ff4757;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+.btn-clear-all {
+    width: 100%;
+    background: linear-gradient(90deg,#ff7979,#ff3838);
+    color: #fff;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
-  p {
-    color: #666;
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 35px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.login-title {
+    text-align: center;
     margin-bottom: 30px;
-  }
+    color: #00d9ff;
+    font-size: 28px;
+    text-shadow: 0 0 10px rgba(0,217,255,0.5);
+}
+.input-group {
+    margin-bottom: 20px;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ccc;
+    font-size: 14px;
+}
+.input-group input {
+    width: 100%;
+    padding: 14px 15px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.input-group input:focus {
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 0 0 2px rgba(0,217,255,0.3);
+}
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg,#00d9ff,#0099ff);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,217,255,0.4);
+}
+.error-msg {
+    color: #ff4757;
+    text-align: center;
+    margin-top: 15px;
+    display: none;
+    padding: 10px;
+    background: rgba(255,71,87,0.1);
+    border-radius: 8px;
+}
+.logout-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,71,87,0.8);
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1000;
+}
+.hidden {
+    display: none !important;
+}
 </style>
 </head>
-
 <body>
-  <div class="card">
-    <div class="avatar"></div>
-    <h1>颜的网站</h1>
-    <p>不是91暗网</p>
-  </div>
-  <script>
-    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-  </script>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
+
+<div class="login-container" id="loginContainer">
+    <h2 class="login-title">🔐 管理后台登录</h2>
+    <form id="loginForm">
+        <div class="input-group">
+            <label>👤 用户名</label>
+            <input type="text" id="username" placeholder="请输入用户名" required>
+        </div>
+        <div class="input-group">
+            <label>🔑 密码</label>
+            <input type="password" id="password" placeholder="请输入密码" required>
+        </div>
+        <button type="submit" class="btn-login">登 录</button>
+        <div class="error-msg" id="errorMsg">用户名或密码错误！</div>
+    </form>
+</div>
+
+<div class="container hidden" id="mainContainer">
+    <button class="logout-btn" onclick="logout()">退出登录</button>
+    <h2>卡密生成管理后台</h2>
+    <div class="count-info" id="totalCount">当前总卡密：0 张</div>
+
+    <div class="panel">
+        <div class="select-wrap">
+            <select id="daySel">
+                <option value="1">1 天有效期</option>
+                <option value="7">1 周有效期</option>
+                <option value="30">1 个月有效期</option>
+                <option value="365">1 年有效期</option>
+            </select>
+            <select id="countSel">
+                <option value="1">生成 1 张</option>
+                <option value="5">批量生成 5 张</option>
+                <option value="10">批量生成 10 张</option>
+                <option value="20">批量生成 20 张</option>
+                <option value="50">批量生成 50 张</option>
+                <option value="custom">自定义数量</option>
+            </select>
+            <br>
+            <input type="number" id="customCount" placeholder="输入数量" min="1">
+        </div>
+        <div style="text-align:center;">
+            <button class="btn btn-gen" onclick="batchCreate()">开始生成</button>
+        </div>
+        <div class="now-kami" id="tipText">选择数量和时效后生成</div>
+    </div>
+
+    <div class="panel">
+        <div class="list-title">📜 历史卡密列表</div>
+        <div class="list-box" id="listBox"></div>
+        <button class="btn btn-clear-all" onclick="clearAllKm()">清空全部卡密</button>
+    </div>
+</div>
+
+<script>
+const AUTH_CREDENTIALS = { username: "yan", password: "yanhonglin123" };
+const SESSION_KEY = "admin_logged_in";
+
+function validateLogin(username, password) {
+    return username === AUTH_CREDENTIALS.username && password === AUTH_CREDENTIALS.password;
+}
+function checkLogin() { return sessionStorage.getItem(SESSION_KEY) === "true"; }
+function setLoginStatus(status) {
+    status ? sessionStorage.setItem(SESSION_KEY,"true") : sessionStorage.removeItem(SESSION_KEY);
+}
+
+document.getElementById("loginForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    const u = document.getElementById("username").value.trim();
+    const p = document.getElementById("password").value;
+    const err = document.getElementById("errorMsg");
+    if(validateLogin(u,p)){ setLoginStatus(true); showMain(); }
+    else{ err.style.display="block"; setTimeout(()=>err.style.display="none",3000); }
+});
+
+function showMain(){
+    document.getElementById("loginContainer").classList.add("hidden");
+    document.getElementById("mainContainer").classList.remove("hidden");
+    renderList();
+}
+
+function logout(){
+    if(confirm("确定退出？")){
+        setLoginStatus(false);
+        document.getElementById("loginContainer").classList.remove("hidden");
+        document.getElementById("mainContainer").classList.add("hidden");
+        document.getElementById("username").value="";
+        document.getElementById("password").value="";
+    }
+}
+
+window.onload = function(){ if(checkLogin()) showMain(); };
+
+// ========== 卡密系统（完全保留你原来的） ==========
+function getList(){ return JSON.parse(localStorage.getItem("kamiList"))||[]; }
+function saveList(arr){ localStorage.setItem("kamiList",JSON.stringify(arr)); }
+function updateTotal(){
+    const list = getList();
+    document.getElementById("totalCount").innerText = "当前总卡密："+list.length+" 张";
+}
+
+function randKami(){
+    const s="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let r="";for(let i=0;i<16;i++)r+=s[Math.floor(Math.random()*s.length)];
+    return "SS-"+r;
+}
+
+document.getElementById("countSel").addEventListener("change",function(){
+    document.getElementById("customCount").style.display = this.value==="custom"?"inline-block":"none";
+});
+
+function batchCreate(){
+    const day = parseInt(document.getElementById("daySel").value);
+    const sel = document.getElementById("countSel").value;
+    let cnt;
+    if(sel==="custom"){
+        cnt=parseInt(document.getElementById("customCount").value);
+        if(isNaN(cnt)||cnt<1){alert("请输入正确数量");return;}
+    }else{ cnt=parseInt(sel); }
+    const list=getList();
+    for(let i=0;i<cnt;i++){
+        const code=randKami();
+        const now=Date.now();
+        list.push({code,create:now,expire:now+day*86400000,used:false});
+    }
+    saveList(list);
+    document.getElementById("tipText").innerText=`已生成 ${cnt} 张卡密`;
+    renderList();
+}
+
+function renderList(){
+    const list=getList();
+    const box=document.getElementById("listBox");
+    box.innerHTML="";
+    const now=Date.now();
+    updateTotal();
+    list.forEach((item,idx)=>{
+        const ct=new Date(item.create).toLocaleString();
+        const et=new Date(item.expire).toLocaleString();
+        let st,col;
+        if(item.used){st="已使用";col="#666";}
+        else if(now>item.expire){st="已过期";col="#ff4757";}
+        else{st="可使用";col="#2ed573";}
+        const d=document.createElement("div");
+        d.className="item";
+        d.innerHTML=`
+        <div class="item-info">
+            <div class="code">${item.code}<span class="status-tag" style="background:${col};color:#fff">${st}</span></div>
+            <div class="time">创建：${ct} | 到期：${et}</div>
+        </div>
+        <button class="btn-del" onclick="delOne(${idx})">删除</button>
+        `;
+        box.appendChild(d);
+    });
+}
+
+function delOne(idx){
+    const list=getList();
+    list.splice(idx,1);
+    saveList(list);
+    renderList();
+}
+
+// ========== 清空全部（正常可用） ==========
+function clearAllKm(){
+    if(!confirm("确定清空所有卡密？不可恢复！")) return;
+    localStorage.removeItem("kamiList");
+    renderList();
+    updateTotal();
+    document.getElementById("tipText").innerText="✅ 已清空全部卡密";
+}
+
+// ========== 跨站联动（只加这个，不改动任何原有功能） ==========
+window.getKamiList = getList;
+window.saveKamiList = saveList;
+
+renderList();
+</script>
 </body>
 </html>
